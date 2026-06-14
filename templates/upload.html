@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload PDF - PDF MCQ Generator{% endblock %}
+
+{% block content %}
+    <section class="section upload-section">
+        <p>Upload a PDF and generate multiple-choice questions from its content.</p>
+        <form action="{{ url_for('generate') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="pdf_file" accept=".pdf" required>
+            <div class="actions">
+                <button type="submit">Generate MCQs</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}

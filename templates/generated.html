@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Generated Questions - PDF MCQ Generator{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <h2 class="section-title">Generated Quiz</h2>
+
+        {% if quiz_data %}
+            <div class="quiz-content">
+                {% for q in quiz_data %}
+                    <div class="quiz-card">
+                        <div class="quiz-question">
+                            <span class="q-number">{{ loop.index }}.</span>
+                            {{ q["question"] }}
+                        </div>
+                        <div class="quiz-options">
+                            {% for letter, text in q["options"].items() %}
+                                <div class="quiz-option" data-letter="{{ letter }}" data-correct="{{ q["correct_answer"] }}">
+                                    <span class="option-letter">{{ letter }}</span>
+                                    <span class="option-text">{{ text }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="quiz-answer">
+                            Answer: <span class="answer-value">{{ q["correct_answer"] }}. {{ q["options"][q["correct_answer"]] }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="actions">
+                <a class="button" href="{{ url_for('upload') }}">Generate another</a>
+            </div>
+        {% else %}
+            <p class="empty-state">No quiz has been generated yet. Upload a PDF to create one.</p>
+            <div class="actions">
+                <a class="button" href="{{ url_for('upload') }}">Upload PDF</a>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.querySelectorAll('.quiz-option').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+            var card = opt.closest('.quiz-card');
+            if (card.classList.contains('has-answered')) return;
+
+            var letter = opt.dataset.letter;
+            var correct = opt.dataset.correct;
+
+            card.querySelectorAll('.quiz-option').forEach(function(o) {
+                o.classList.remove('correct', 'wrong');
+            });
+
+            if (letter === correct) {
+                opt.classList.add('correct');
+            } else {
+                opt.classList.add('wrong');
+                card.querySelector('.quiz-option[data-letter="' + correct + '"]').classList.add('correct');
+            }
+
+            card.classList.add('has-answered');
+        });
+    });
+</script>
+{% endblock %}
