@@ -1,7 +1,8 @@
 import os
+
 from werkzeug.utils import secure_filename
 
-ALLOWED_EXTENSIONS = {".pdf"}
+ALLOWED_EXTENSIONS: set[str] = {".pdf"}
 
 
 def ensure_upload_folder(upload_folder: str) -> None:
@@ -9,7 +10,8 @@ def ensure_upload_folder(upload_folder: str) -> None:
 
 
 def is_allowed_file(filename: str) -> bool:
-    return filename.lower().endswith(".pdf")
+    _, ext = os.path.splitext(filename.lower())
+    return ext in ALLOWED_EXTENSIONS
 
 
 def save_uploaded_pdf(uploaded_file, upload_folder: str) -> str:

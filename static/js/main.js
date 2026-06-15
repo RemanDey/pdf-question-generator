@@ -1,34 +1,41 @@
-document.addEventListener('DOMContentLoaded', function () {
-  var fileInput = document.querySelector('input[type=file]');
-  if (fileInput) {
+(function () {
+  "use strict";
+
+  function initFileInput() {
+    var fileInput = document.querySelector('input[type=file]');
+    if (!fileInput) return;
+
     fileInput.addEventListener('change', function () {
       var existing = document.querySelector('.file-name');
       if (existing) existing.remove();
 
-      var fileName = fileInput.files && fileInput.files[0] ? fileInput.files[0].name : '';
-      if (fileName) {
-        var label = document.createElement('div');
-        label.className = 'file-name';
-        label.textContent = fileName;
-        fileInput.parentNode.insertBefore(label, fileInput.nextSibling);
-      }
+      var file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      var label = document.createElement('div');
+      label.className = 'file-name';
+      label.textContent = file.name;
+      fileInput.parentNode.insertBefore(label, fileInput.nextSibling);
     });
   }
 
-  var form = document.querySelector('form');
-  if (form) {
+  function initFormSubmit() {
+    var form = document.querySelector('form');
+    if (!form) return;
+
     form.addEventListener('submit', function () {
       var btn = form.querySelector('button[type=submit]');
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = 'Generating...';
-      }
+      if (!btn) return;
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
     });
   }
 
-  var hamburger = document.querySelector('.hamburger');
-  var nav = document.querySelector('.main-nav');
-  if (hamburger && nav) {
+  function initHamburger() {
+    var hamburger = document.querySelector('.hamburger');
+    var nav = document.querySelector('.main-nav');
+    if (!hamburger || !nav) return;
+
     hamburger.addEventListener('click', function () {
       hamburger.classList.toggle('open');
       nav.classList.toggle('open');
@@ -41,4 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   }
-});
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initFileInput();
+    initFormSubmit();
+    initHamburger();
+    QuizUtils.setupQuizClickHandlers();
+  });
+})();
