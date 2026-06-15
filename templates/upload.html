@@ -7,6 +7,22 @@
         <p>Upload a PDF and generate multiple-choice questions from its content.</p>
         <form action="{{ url_for('generate') }}" method="POST" enctype="multipart/form-data">
             <input type="file" name="pdf_file" accept=".pdf" required>
+
+            <div class="form-fields">
+                <div class="form-group">
+                    <label for="question_count">Number of Questions</label>
+                    <input type="number" id="question_count" name="question_count" value="5" min="1" max="30" required>
+                </div>
+                <div class="form-group">
+                    <label for="hardness">Hardness Level</label>
+                    <select id="hardness" name="hardness" required>
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="actions">
                 <button type="submit">Generate MCQs</button>
             </div>

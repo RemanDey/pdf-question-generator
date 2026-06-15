@@ -32,9 +32,21 @@ def _split_text(text: str, n: int = 4) -> list[str]:
     return chunks
 
 
-def _prompt(text: str, count: int) -> str:
+def _hardness_instruction(level: str) -> str:
+    instructions = {
+        "easy": "Generate basic recall-level questions that test direct understanding of the text. Questions should be straightforward with answers explicitly stated in the text.",
+        "medium": "Generate comprehension-level questions that test understanding of concepts, relationships, and implications. Questions may require connecting ideas within the text.",
+        "hard": "Generate advanced questions that test analysis, evaluation, and synthesis. Questions should require critical thinking, inference, and applying concepts from the text.",
+    }
+    return instructions.get(level, instructions["medium"])
+
+
+def _prompt(text: str, count: int, hardness: str) -> str:
     return f"""
 Based on the following text, generate {count} Multiple Choice Questions (MCQs).
+
+Difficulty: {hardness.upper()}
+{_hardness_instruction(hardness)}
 
 Return ONLY a valid JSON array (no markdown, no code fences). Each object must follow this exact structure:
 {{
@@ -53,7 +65,7 @@ Text:
 """
 
 
-def _call(text_chunk: str, count: int, api_key: str) -> list:
+def _call(text_chunk: str, count: int, hardness: str, api_key: str) -> list:
     if not api_key or not text_chunk.strip():
         return []
 
@@ -62,7 +74,7 @@ def _call(text_chunk: str, count: int, api_key: str) -> list:
         model="llama-3.3-70b-versatile",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that generates educational quizzes. Always respond with valid JSON only."},
-            {"role": "user", "content": _prompt(text_chunk, count)},
+            {"role": "user", "content": _prompt(text_chunk, count, hardness)},
         ],
         temperature=0.7,
     )
@@ -87,7 +99,7 @@ def _call(text_chunk: str, count: int, api_key: str) -> list:
     return validated
 
 
-def generate_mcqs(text: str, question_count: int = 5) -> list:
+def generate_mcqs(text: str, question_count: int = 5, hardness: str = "medium") -> list:
     chunks = _split_text(text, 4)
     base = question_count // 4
     rem = question_count % 4
@@ -97,7 +109,7 @@ def generate_mcqs(text: str, question_count: int = 5) -> list:
         futures = []
         for i in range(4):
             cnt = base + (1 if i < rem else 0)
-            futures.append(pool.submit(_call, chunks[i], cnt, _get_key(i)))
+            futures.append(pool.submit(_call, chunks[i], cnt, hardness, _get_key(i)))
 
         for f in as_completed(futures):
             all_questions.extend(f.result())

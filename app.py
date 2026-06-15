@@ -37,7 +37,9 @@ def generate():
             file_service.cleanup_file(file_path)
             return "Could not extract text from this PDF. It might be scanned/an image.", 400
 
-        quiz_data = quiz_service.generate_mcqs(extracted_text)
+        question_count = request.form.get('question_count', 5, type=int)
+        hardness = request.form.get('hardness', 'medium')
+        quiz_data = quiz_service.generate_mcqs(extracted_text, question_count=question_count, hardness=hardness)
         file_service.cleanup_file(file_path)
 
         session['quiz_data'] = quiz_data
