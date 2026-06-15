@@ -42,6 +42,23 @@
 
 {% block scripts %}
 <script>
+    {% if quiz_data and question_count %}
+    var quizData = {{ quiz_data | tojson | safe }};
+    var questionCount = {{ question_count | tojson | safe }};
+    var hardness = {{ hardness | tojson | safe }};
+
+    var history = JSON.parse(localStorage.getItem('docuquiz_history') || '[]');
+    history.unshift({
+        id: Date.now(),
+        date: new Date().toLocaleString(),
+        questionCount: questionCount,
+        hardness: hardness,
+        quizData: quizData
+    });
+    if (history.length > 20) history = history.slice(0, 20);
+    localStorage.setItem('docuquiz_history', JSON.stringify(history));
+    {% endif %}
+
     document.querySelectorAll('.quiz-option').forEach(function(opt) {
         opt.addEventListener('click', function() {
             var card = opt.closest('.quiz-card');

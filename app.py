@@ -44,7 +44,7 @@ def generate():
 
         session['quiz_data'] = quiz_data
 
-        return render_template('generated.html', quiz_data=quiz_data, active_page='generated')
+        return render_template('generated.html', quiz_data=quiz_data, active_page='generated', question_count=question_count, hardness=hardness)
 
     return "Invalid file", 400
 
@@ -54,10 +54,15 @@ def about():
     return render_template('about.html', active_page='about')
 
 
+@app.route('/history', methods=['GET'])
+def history():
+    return render_template('history.html', active_page='history')
+
+
 @app.route('/generated', methods=['GET'])
 def generated():
     quiz_data = session.get('quiz_data')
-    return render_template('generated.html', quiz_data=quiz_data, active_page='generated')
+    return render_template('generated.html', quiz_data=quiz_data, active_page='generated', question_count=None, hardness=None)
 
 
 if __name__ == '__main__':

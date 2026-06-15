@@ -408,65 +408,6 @@ button:disabled {
 }
 
 /* ── About ── */
-.about-creator {
-  margin-top: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-}
-
-.about-creator summary {
-  cursor: pointer;
-  padding: 12px 16px;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  user-select: none;
-}
-
-.about-creator summary::after {
-  content: '+';
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--accent);
-  transition: transform 0.2s ease;
-}
-
-.about-creator[open] summary::after {
-  content: '−';
-}
-
-.about-creator summary h3 {
-  margin: 0;
-  font-size: 15px;
-}
-
-.about-creator summary::-webkit-details-marker {
-  display: none;
-}
-
-.about-creator p {
-  padding: 0 16px 16px;
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.about-creator p strong {
-  color: var(--text);
-}
-
-.about-email {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.about-email:hover {
-  text-decoration: underline;
-}
-
 .about-content h3 {
   font-size: 15px;
   font-weight: 600;
@@ -498,6 +439,89 @@ button:disabled {
 .about-steps li strong,
 .about-tips li strong {
   color: var(--text);
+}
+
+/* ── History ── */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #222222;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  transition: border-color 0.2s ease;
+}
+
+.history-card:hover {
+  border-color: var(--border-hover);
+}
+
+.history-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.history-date {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.history-info {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.history-view-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.history-view-btn:hover {
+  background: var(--accent-hover);
+}
+
+.history-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.history-delete-btn:hover {
+  color: #d43f3f;
+}
+
+.history-back-btn {
+  margin-bottom: 16px;
+}
+
+.history-detail-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
 /* ── Responsive ── */

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz History - DocuQuiz{% endblock %}
+
+{% block content %}
+    <section class="section history-section">
+        <h2 class="section-title">Quiz History</h2>
+        <div id="history-root"></div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

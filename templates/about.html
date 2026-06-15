@@ -7,29 +7,38 @@
         <h2 class="section-title">About</h2>
 
         <div class="about-content">
-            <p>Welcome to DocuQuiz! I built this tool to help you turn any PDF into a set of multiple-choice questions — perfect for studying, revision, or testing yourself on the go.</p>
+            <p>DocuQuiz is a web-based tool that converts PDF documents into multiple-choice questions using a generative pretrained transformer. It is designed for students, educators, and self-learners who want to transform study material into an interactive quiz format for systematic revision and self-assessment.</p>
 
             <h3>How to use</h3>
             <ol class="about-steps">
-                <li>Head over to <strong>Upload PDF</strong> and pick a PDF file from your device.</li>
-                <li>Choose how many <strong>questions</strong> you want (1&ndash;30).</li>
-                <li>Pick a <strong>difficulty level</strong> &mdash; Easy, Medium, or Hard.</li>
-                <li>Hit <strong>Generate MCQs</strong> and let the AI do the rest.</li>
-                <li>Go through the quiz and click an answer to see if you got it right.</li>
+                <li>Navigate to the <strong>Upload PDF</strong> page and select a PDF file from your local filesystem.</li>
+                <li>Specify the <strong>number of questions</strong> to generate (range: 1&ndash;30).</li>
+                <li>Choose a <strong>difficulty level</strong> that determines the cognitive depth of the generated items &mdash; Easy (recall-oriented), Medium (comprehension-oriented), or Hard (application and analysis-oriented).</li>
+                <li>Click <strong>Generate MCQs</strong> to submit the document for processing. The generative pretrained transformer processes the extracted text and returns a structured set of questions.</li>
+                <li>Review each question interactively: click on any answer option to receive immediate feedback. Correct selections are highlighted in green, incorrect ones in red, and the correct answer is revealed automatically.</li>
+                <li>Past quizzes are persisted in the browser's local storage and can be revisited from the <strong>History</strong> page at any time without requiring a new generation cycle.</li>
             </ol>
 
-            <h3>Tips</h3>
+            <h3>How it works</h3>
             <ul class="about-tips">
-                <li>Text-based PDFs work best. If your PDF is scanned or just images, the text might not come through.</li>
-                <li>Hard mode works better with content that has some depth to it.</li>
-                <li>You can always revisit your last quiz under the <strong>Generated Questions</strong> tab.</li>
+                <li><strong>Text extraction</strong> &mdash; The uploaded PDF is processed through a standard text extraction pipeline that parses the document structure and extracts raw textual content from embedded text layers.</li>
+                <li><strong>Contextual input preparation</strong> &mdash; The extracted corpus is cleaned, segmented, and formatted into a structured prompt that preserves semantic relationships across sections, paragraphs, and sentences.</li>
+                <li><strong>Question generation via generative pretrained transformer</strong> &mdash; The prepared text is passed as contextual input to a generative pretrained transformer, which identifies salient concepts, relationships, and domain-specific terminologies within the corpus.</li>
+                <li><strong>Distractor synthesis</strong> &mdash; For each identified concept, the model generates a question stem along with four answer options: one factually correct answer grounded in the source text, and three plausible distractors designed to test discriminative comprehension.</li>
+                <li><strong>Difficulty modulation</strong> &mdash; The user-selected hardness parameter (Easy, Medium, or Hard) controls the specificity and cognitive depth the model is instructed to target. Easy maps to recall-level questions, Medium to comprehension-level, and Hard to application and analysis-level reasoning.</li>
+                <li><strong>Response formatting</strong> &mdash; The model output is parsed into a structured JSON payload containing the question stem, an ordered dictionary of options (A&ndash;D), and the designated correct answer. This payload is rendered into an interactive quiz interface on the client side.</li>
             </ul>
 
-            <details class="about-creator">
-                <summary><h3>About the Creator</h3></summary>
-                <p>I'm <strong>Reman Dey</strong>, an Engineering Physics student at IIT Mandi. I built DocuQuiz because I wanted a quick way to turn dense PDF notes into quiz questions — something that could make revision less tedious and more interactive. <br>I love building things, from hardware projects like hovercrafts, Tesla turbines, and quadcopters to software like FriendForge, JoSAAssist, and this very app. I work mainly with Python, C/C++, and JavaScript, and I'm always looking for the next interesting problem to solve.</p>
-                <p>If you have any doubts or feedback, feel free to reach out at <a class="about-email" href="mailto:reman.airport@gmail.com">reman.airport@gmail.com</a>.</p>
-            </details>
+            <h3>Tips for best results</h3>
+            <ul class="about-tips">
+                <li>Text-based PDFs yield optimal results. Scanned documents or image-only PDFs rely on embedded text layers; since no optical character recognition (OCR) pipeline is integrated, such files may fail to produce usable output.</li>
+                <li>The Hard difficulty setting is most effective when the source material contains dense, technical, or multi-layered content that supports analysis-level questioning.</li>
+                <li>Files must not exceed 16 MB due to server-imposed upload constraints.</li>
+                <li>The <strong>History</strong> tab provides persistent access to all previously generated quizzes. Entries can be viewed in full or deleted individually. All data resides exclusively in the client's local storage and does not transit to any external server.</li>
+            </ul>
+
+            <h3>Privacy</h3>
+            <p>DocuQuiz processes uploaded PDFs entirely in server memory. Once text extraction is complete, the uploaded file is deleted from the server filesystem before the response is returned. No PDF content, extracted text, or generated quiz data is retained, logged, or transmitted to any third party. Quiz history is stored solely in the browser's localStorage API and remains under the user's exclusive control.</p>
         </div>
     </section>
 {% endblock %}
