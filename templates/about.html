@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}About - DocuQuiz{% endblock %}
+
+{% block content %}
+    <section class="section about-section">
+        <h2 class="section-title">About</h2>
+
+        <div class="about-content">
+            <p>Welcome to DocuQuiz! I built this tool to help you turn any PDF into a set of multiple-choice questions — perfect for studying, revision, or testing yourself on the go.</p>
+
+            <h3>How to use</h3>
+            <ol class="about-steps">
+                <li>Head over to <strong>Upload PDF</strong> and pick a PDF file from your device.</li>
+                <li>Choose how many <strong>questions</strong> you want (1&ndash;30).</li>
+                <li>Pick a <strong>difficulty level</strong> &mdash; Easy, Medium, or Hard.</li>
+                <li>Hit <strong>Generate MCQs</strong> and let the AI do the rest.</li>
+                <li>Go through the quiz and click an answer to see if you got it right.</li>
+            </ol>
+
+            <h3>Tips</h3>
+            <ul class="about-tips">
+                <li>Text-based PDFs work best. If your PDF is scanned or just images, the text might not come through.</li>
+                <li>Hard mode works better with content that has some depth to it.</li>
+                <li>You can always revisit your last quiz under the <strong>Generated Questions</strong> tab.</li>
+            </ul>
+
+            <details class="about-creator">
+                <summary><h3>About the Creator</h3></summary>
+                <p>I'm <strong>Reman Dey</strong>, an Engineering Physics student at IIT Mandi. I built DocuQuiz because I wanted a quick way to turn dense PDF notes into quiz questions — something that could make revision less tedious and more interactive. <br>I love building things, from hardware projects like hovercrafts, Tesla turbines, and quadcopters to software like FriendForge, JoSAAssist, and this very app. I work mainly with Python, C/C++, and JavaScript, and I'm always looking for the next interesting problem to solve.</p>
+                <p>If you have any doubts or feedback, feel free to reach out at <a class="about-email" href="mailto:reman.airport@gmail.com">reman.airport@gmail.com</a>.</p>
+            </details>
+        </div>
+    </section>
+{% endblock %}

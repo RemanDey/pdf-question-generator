@@ -49,6 +49,11 @@ def generate():
     return "Invalid file", 400
 
 
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html', active_page='about')
+
+
 @app.route('/generated', methods=['GET'])
 def generated():
     quiz_data = session.get('quiz_data')

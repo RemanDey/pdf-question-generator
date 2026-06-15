@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}PDF MCQ Generator{% endblock %}</title>
+    <title>{% block title %}DocuQuiz{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 
     <header class="site-header">
         <div class="container">
-            <h1 class="logo">PDF MCQ Generator</h1>
+            <h1 class="logo">DocuQuiz</h1>
             <button class="hamburger" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
@@ -22,6 +22,7 @@
             <nav class="main-nav">
                 <a href="{{ url_for('upload') }}" class="{{ 'active' if active_page == 'upload' else '' }}">Upload PDF</a>
                 <a href="{{ url_for('generated') }}" class="{{ 'active' if active_page == 'generated' else '' }}">Generated Questions</a>
+                <a href="{{ url_for('about') }}" class="{{ 'active' if active_page == 'about' else '' }}">About</a>
             </nav>
         </div>
     </header>
@@ -31,7 +32,7 @@
     </main>
 
     <footer class="site-footer">
-        <div class="container">&copy;Developed by Reman Dey</div>
+        <div class="container">&copy; DocuQuiz</div>
     </footer>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
