@@ -2,6 +2,8 @@
 
 DocuQuiz is a web-based application that converts PDF documents into multiple-choice questions (MCQs) using a generative pretrained transformer. It is designed for students, educators, and self-learners who wish to transform static study material into an interactive quiz format for systematic revision and self-assessment.
 
+The application is live at **[https://docu-quiz.onrender.com/](https://docu-quiz.onrender.com/)**.
+
 ## Architecture
 
 The application follows a client-server architecture:
