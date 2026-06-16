@@ -20,14 +20,18 @@
   }
 
   function initFormSubmit() {
-    var form = document.querySelector('form');
+    var form = document.getElementById('upload-form');
     if (!form) return;
 
-    form.addEventListener('submit', function () {
-      var btn = form.querySelector('button[type=submit]');
+    form.addEventListener('submit', function (e) {
+      var btn = e.submitter;
       if (!btn) return;
       btn.disabled = true;
-      btn.textContent = 'Generating...';
+      if (btn.id === 'generate-btn') {
+        btn.textContent = 'Generating...';
+      } else if (btn.id === 'listen-btn') {
+        btn.textContent = 'Extracting...';
+      }
     });
   }
 

@@ -60,5 +60,9 @@
         localStorage.setItem('docuquiz_history', JSON.stringify(history));
     })();
     {% endif %}
+
+    {% if extracted_text %}
+    localStorage.setItem('docuquiz_extracted_text', {{ extracted_text | tojson | safe }});
+    {% endif %}
 </script>
 {% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Listen to PDF - DocuQuiz{% endblock %}
+
+{% block content %}
+    <section class="section listen-section">
+        <h2 class="section-title">Listen to PDF</h2>
+        <div id="listen-root"></div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% if extracted_text %}
+    localStorage.setItem('docuquiz_extracted_text', {{ extracted_text | tojson | safe }});
+    {% endif %}
+</script>
+
+<script src="{{ url_for('static', filename='js/tts.js') }}"></script>
+<script>
+(function () {
+    "use strict";
+
+    var root = document.getElementById("listen-root");
+
+    /* ── Load extracted text from localStorage ──────────────────────── */
+
+    var text = localStorage.getItem("docuquiz_extracted_text");
+
+    if (!text || !text.trim()) {
+        root.innerHTML =
+            '<p class="empty-state">No PDF content found. ' +
+            'Upload a PDF and generate questions first.</p>' +
+            '<div class="actions">' +
+            '<a class="button" href="{{ url_for("upload") }}">Upload PDF</a>' +
+            '</div>';
+        return;
+    }
+
+    /* ── Check browser support ──────────────────────────────────────── */
+
+    if (!TextToSpeech.isSupported()) {
+        root.innerHTML =
+            '<p class="empty-state">Your browser does not support ' +
+            'text-to-speech. Please try Chrome, Edge, or Safari.</p>';
+        return;
+    }
+
+    /* ── Helper ─────────────────────────────────────────────────────── */
+
+    function createButton(text, className, parent) {
+        var btn = document.createElement("button");
+        btn.className = className;
+        btn.textContent = text;
+        parent.appendChild(btn);
+        return btn;
+    }
+
+    /* ── Build player panel ─────────────────────────────────────────── */
+
+    var panel = document.createElement("div");
+    panel.className = "tts-panel";
+
+    /* Controls row */
+    var controls = document.createElement("div");
+    controls.className = "tts-controls";
+
+    var playBtn = createButton("▶ Play", "tts-btn tts-play", controls);
+    var stopBtn = createButton("⏹ Stop", "tts-btn tts-stop", controls);
+
+    panel.appendChild(controls);
+
+    /* Speed row */
+    var speedRow = document.createElement("div");
+    speedRow.className = "tts-speed-row";
+
+    var speedLabel = document.createElement("label");
+    speedLabel.className = "tts-speed-label";
+    speedLabel.textContent = "Speed:";
+    speedRow.appendChild(speedLabel);
+
+    var speedSlider = document.createElement("input");
+    speedSlider.type = "range";
+    speedSlider.className = "tts-speed-slider";
+    speedSlider.min = "0.5";
+    speedSlider.max = "2";
+    speedSlider.step = "0.1";
+    speedSlider.value = "1";
+    speedRow.appendChild(speedSlider);
+
+    var speedValue = document.createElement("span");
+    speedValue.className = "tts-speed-value";
+    speedValue.textContent = "1.0×";
+    speedRow.appendChild(speedValue);
+
+    panel.appendChild(speedRow);
+    root.appendChild(panel);
+
+    /* ── Build text display ─────────────────────────────────────────── */
+
+    var textDisplay = document.createElement("div");
+    textDisplay.className = "tts-text-display";
+    textDisplay.textContent = text;
+    root.appendChild(textDisplay);
+
+    /* ── Wire up TTS controls ───────────────────────────────────────── */
+
+    playBtn.addEventListener("click", function () {
+        if (TextToSpeech.isSpeaking() && !TextToSpeech.isPaused()) {
+            TextToSpeech.pause();
+            playBtn.textContent = "▶ Resume";
+        } else if (TextToSpeech.isPaused()) {
+            TextToSpeech.resume();
+            playBtn.textContent = "⏸ Pause";
+        } else {
+            TextToSpeech.speakText(text, {
+                rate: parseFloat(speedSlider.value),
+                onEnd: function () {
+                    playBtn.textContent = "▶ Play";
+                },
+            });
+            playBtn.textContent = "⏸ Pause";
+        }
+    });
+
+    stopBtn.addEventListener("click", function () {
+        TextToSpeech.stop();
+        playBtn.textContent = "▶ Play";
+    });
+
+    speedSlider.addEventListener("input", function () {
+        var val = parseFloat(speedSlider.value);
+        speedValue.textContent = val.toFixed(1) + "×";
+        TextToSpeech.setRate(val);
+    });
+
+    /* ── Cleanup on page unload ─────────────────────────────────────── */
+
+    window.addEventListener("beforeunload", function () {
+        TextToSpeech.stop();
+    });
+
+})();
+</script>
+{% endblock %}

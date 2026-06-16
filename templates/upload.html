@@ -4,8 +4,9 @@
 
 {% block content %}
     <section class="section upload-section">
-        <p>Upload a PDF and generate multiple-choice questions from its content.</p>
-        <form action="{{ url_for('generate') }}" method="POST" enctype="multipart/form-data">
+        <p>Upload a PDF to generate multiple-choice questions or listen to its content.</p>
+
+        <form id="upload-form" method="POST" enctype="multipart/form-data">
             <input type="file" name="pdf_file" accept=".pdf" required>
 
             <div class="form-fields">
@@ -23,8 +24,13 @@
                 </div>
             </div>
 
-            <div class="actions">
-                <button type="submit">Generate MCQs</button>
+            <div class="actions actions-split">
+                <button type="submit" id="generate-btn" formaction="{{ url_for('generate') }}" class="button-primary">
+                    Generate MCQs
+                </button>
+                <button type="submit" id="listen-btn" formaction="{{ url_for('extract') }}" class="button-secondary">
+                    Listen to PDF
+                </button>
             </div>
         </form>
     </section>

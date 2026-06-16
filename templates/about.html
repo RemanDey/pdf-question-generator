@@ -14,7 +14,7 @@
                 <li>Navigate to the <strong>Upload PDF</strong> page and select a PDF file from your local filesystem.</li>
                 <li>Specify the <strong>number of questions</strong> to generate (range: 1&ndash;30).</li>
                 <li>Choose a <strong>difficulty level</strong> that determines the cognitive depth of the generated items &mdash; Easy (recall-oriented), Medium (comprehension-oriented), or Hard (application and analysis-oriented).</li>
-                <li>Click <strong>Generate MCQs</strong> to submit the document for processing. The generative pretrained transformer processes the extracted text and returns a structured set of questions.</li>
+                <li>Click <strong>Generate MCQs</strong> to submit the document for processing and generate a quiz, or click <strong>Listen to PDF</strong> to navigate directly to the text-to-speech reader for the extracted document.</li>
                 <li>Review each question interactively: click on any answer option to receive immediate feedback. Correct selections are highlighted in green, incorrect ones in red, and the correct answer is revealed automatically.</li>
                 <li>Past quizzes are persisted in the browser's local storage and can be revisited from the <strong>History</strong> page at any time without requiring a new generation cycle.</li>
             </ol>
@@ -29,12 +29,21 @@
                 <li><strong>Response formatting</strong> &mdash; The model output is parsed into a structured JSON payload containing the question stem, an ordered dictionary of options (A&ndash;D), and the designated correct answer. This payload is rendered into an interactive quiz interface on the client side.</li>
             </ul>
 
+            <h3>Listen to PDF</h3>
+            <ul class="about-tips">
+                <li><strong>Text-to-speech reader</strong> &mdash; The <strong>Listen</strong> tab provides a dedicated page for hearing the extracted PDF content read aloud. The text is displayed alongside a player panel with Play/Pause, Stop, and speed controls (0.5&times;&ndash;2.0&times;).</li>
+                <li><strong>Two entry points</strong> &mdash; You can reach the Listen page by clicking <strong>Listen to PDF</strong> on the upload form, or by navigating directly to the <strong>Listen</strong> tab in the navigation bar.</li>
+                <li><strong>Client-side speech</strong> &mdash; All speech is generated locally using the browser's built-in Web Speech API. No audio data is sent to any server. The extracted text is stored in the browser's local storage for playback.</li>
+                <li><strong>Playback controls</strong> &mdash; Use the Play/Pause toggle to start and pause reading. The Stop button resets playback to the beginning. The Speed slider lets you slow down or speed up the narration to suit your preference.</li>
+            </ul>
+
             <h3>Tips for best results</h3>
             <ul class="about-tips">
                 <li>Text-based PDFs yield optimal results. Scanned documents or image-only PDFs rely on embedded text layers; since no optical character recognition (OCR) pipeline is integrated, such files may fail to produce usable output.</li>
                 <li>The Hard difficulty setting is most effective when the source material contains dense, technical, or multi-layered content that supports analysis-level questioning.</li>
                 <li>Files must not exceed 16 MB due to server-imposed upload constraints.</li>
                 <li>The <strong>History</strong> tab provides persistent access to all previously generated quizzes. Entries can be viewed in full or deleted individually. All data resides exclusively in the client's local storage and does not transit to any external server.</li>
+                <li>The <strong>Listen</strong> tab requires a browser that supports the Web Speech API (Chrome, Edge, Safari, Firefox). Speech is generated entirely on your device.</li>
             </ul>
 
             <h3>Privacy</h3>

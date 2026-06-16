@@ -40,7 +40,11 @@ The quiz data lived only in the Flask session, which meant refreshing the page o
 - A History page that reads from localStorage and lets users browse, view, or delete past quizzes.
 - Server-side session storage for the most recently generated quiz (used by the Generated Questions tab).
 
-## Phase 6 — The About page
+## Phase 6 — Text-to-speech reading
+
+The extracted PDF text was already available on the server but was never exposed to the user beyond quiz generation. I added a dedicated **Listen** page that reads the extracted text aloud using the browser's native Web Speech API. The text is persisted in localStorage, making it available across navigation without additional server requests. The initial implementation used `synth.pause()` and `synth.resume()`, but cross-browser inconsistencies — particularly in Chrome — forced a redesign: speech is now split into sentence-sized chunks, and pause is implemented via `synth.cancel()` with chunk-index tracking, so resume re-reads the current sentence rather than restarting the entire document. A speed slider (0.5×–2.0×) and Play/Pause/Stop controls provide full playback management.
+
+## Phase 7 — The About page
 
 A dedicated About page was added to document how the tool works, how to use it, and privacy considerations. It went through several rewrites — first person, then third person, with varying levels of technical depth. The final version describes the pipeline in scientific terms and replaces generic "AI" phrasing with "generative pretrained transformer" for precision.
 

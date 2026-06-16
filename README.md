@@ -48,6 +48,9 @@ The aggregated list of validated questions is passed to the Jinja2 template engi
 ### 8. Client-side persistence
 After rendering, the quiz data (questions, options, answers, question count, and difficulty level) is serialized to the browser's localStorage under the key `docuquiz_history`. A maximum of 20 entries is retained; older entries are evicted from the front of the queue. This history can be browsed, viewed in full, or deleted from the History page without any server interaction.
 
+### 9. Text-to-speech reading
+The extracted PDF text is saved to the browser's localStorage alongside the quiz data. A dedicated **Listen** page reads this text aloud using the browser's built-in Web Speech API. The reader offers Play/Pause, Stop, and a variable-speed slider (0.5&times;&ndash;2.0&times;). All speech synthesis happens client-side with no audio data sent to any server. The Listen page can be accessed either by clicking **Listen to PDF** on the upload form or via the **Listen** tab in the navigation bar.
+
 ## Tech stack
 
 | Component | Technology |
@@ -60,6 +63,7 @@ After rendering, the quiz data (questions, options, answers, question count, and
 | Styling | Custom CSS (dark theme) |
 | Persistence (server) | Flask sessions (signed cookies) |
 | Persistence (client) | Web Storage API (localStorage) |
+| Speech synthesis | Web Speech API (SpeechSynthesisUtterance) |
 | WSGI server | Gunicorn (production) |
 
 ## Setup
@@ -115,9 +119,10 @@ gunicorn app:app
 2. Select a PDF file from your local filesystem.
 3. Specify the number of questions to generate (1–30).
 4. Choose a difficulty level (Easy, Medium, or Hard).
-5. Click **Generate MCQs**.
+5. Click **Generate MCQs** to create a quiz, or click **Listen to PDF** to hear the document read aloud.
 6. Review the quiz interactively — click any answer to check correctness.
 7. Past quizzes are accessible from the **History** tab.
+8. The extracted PDF text can be read aloud from the **Listen** tab at any time.
 
 ## Privacy
 

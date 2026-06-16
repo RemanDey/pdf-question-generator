@@ -93,7 +93,24 @@ DocuQuiz does not have built-in sharing, but you can still use it in a group set
 
 ---
 
-## 7. Privacy-conscious use
+## 7. Listening to a PDF aloud
+
+The **Listen** feature reads the extracted PDF content aloud using your browser's text-to-speech engine. This is useful for auditory learning, proofreading, or multitasking.
+
+1. Upload a PDF from the **Upload PDF** page and click **Listen to PDF**, or navigate directly to the **Listen** tab.
+2. The extracted text appears in a scrollable panel with a player bar above it.
+3. Click **Play** to start reading from the beginning. The button toggles to **Pause** while speech is active.
+4. Use **Pause** to stop mid-sentence, and **Resume** to continue from the same sentence.
+5. Click **Stop** to reset playback to the start of the document.
+6. Adjust the **Speed** slider to slow down (0.5×) or speed up (2.0×) the narration.
+
+**Note:** Speech is generated entirely on your device using the Web Speech API. No audio data is transmitted to any server. The feature works in Chrome, Edge, Safari, and Firefox.
+
+**Best for:** Auditory learners, proofreading your own writing, or reviewing content while doing other tasks.
+
+---
+
+## 8. Privacy-conscious use
 
 If you are working with sensitive or confidential documents, observe the following:
 

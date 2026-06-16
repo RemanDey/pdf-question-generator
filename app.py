@@ -2,7 +2,7 @@ import logging
 import os
 from dataclasses import dataclass, field
 
-from flask import Flask, abort, render_template, request, session
+from flask import Flask, abort, redirect, render_template, request, session, url_for
 
 import file_service
 import pdf_service
@@ -77,6 +77,7 @@ def _register_routes(app: Flask) -> None:
         file_service.cleanup_file(file_path)
 
         session["quiz_data"] = quiz_data
+        session["extracted_text"] = extracted_text
 
         return render_template(
             "generated.html",
@@ -84,17 +85,60 @@ def _register_routes(app: Flask) -> None:
             active_page="generated",
             question_count=question_count,
             hardness=hardness,
+            extracted_text=extracted_text,
         )
 
     @app.route("/generated", methods=["GET"])
     def generated():
         quiz_data = session.get("quiz_data")
+        extracted_text = session.get("extracted_text")
         return render_template(
             "generated.html",
             quiz_data=quiz_data,
             active_page="generated",
             question_count=None,
             hardness=None,
+            extracted_text=extracted_text,
+        )
+
+    @app.route("/extract", methods=["POST"])
+    def extract():
+        if "pdf_file" not in request.files:
+            abort(400, "No file part in the request.")
+
+        uploaded_file = request.files["pdf_file"]
+        if uploaded_file.filename == "":
+            abort(400, "No file selected.")
+
+        if not file_service.is_allowed_file(uploaded_file.filename):
+            abort(400, "Invalid file type. Only PDF files are accepted.")
+
+        file_path = file_service.save_uploaded_pdf(
+            uploaded_file, app.config["UPLOAD_FOLDER"]
+        )
+
+        extracted_text = pdf_service.extract_text_from_pdf(file_path)
+
+        file_service.cleanup_file(file_path)
+
+        if not extracted_text.strip():
+            abort(
+                400,
+                "Could not extract text from this PDF. "
+                "It might be a scanned document or image-based PDF.",
+            )
+
+        session["extracted_text"] = extracted_text
+
+        return redirect(url_for("listen"))
+
+    @app.route("/listen", methods=["GET"])
+    def listen():
+        extracted_text = session.get("extracted_text")
+        return render_template(
+            "listen.html",
+            active_page="listen",
+            extracted_text=extracted_text,
         )
 
     @app.route("/history", methods=["GET"])
